@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 
-
 import matplotlib.pyplot as plt
+import seaborn as sn
 
 def corr(data1,data2):
     #data1 and data2 should be in np arrays#
@@ -14,7 +14,7 @@ def corr(data1,data2):
     return corr
 
 
-totaldataset_file_path = '../Dataset/total_dataset.csv'  #'20181001':'20211201'  “time,high,low,open,volumefrom,volumeto,close”
+totaldataset_file_path = '../Dataset/total_dataset_BTC.csv'  #'20181001':'20211201'  “time,high,low,open,volumefrom,volumeto,close”
 totaldataset_df = pd.read_csv(totaldataset_file_path, parse_dates=[0], index_col=0)
 totaldataset_df.columns = ["high","low","open","volumefrom","volumeto","close","top_tier_volume_quote","top_tier_volume_base","top_tier_volume_total",
                     "cccagg_volume_quote","cccagg_volume_base","cccagg_volume_total",
@@ -125,7 +125,7 @@ totaldataset_df['difficulty28']=totaldataset_df['difficulty'].rolling(window=28,
 
 
 totaldataset_df['average_transaction_value28']=totaldataset_df['average_transaction_value'].rolling(window=28,min_periods=1).mean()
-
+#close prices
 totaldataset_df['closesma3']=totaldataset_df['close'].rolling(window=3,min_periods=1).mean()
 totaldataset_df['closesma5']=totaldataset_df['close'].rolling(window=5,min_periods=1).mean()
 totaldataset_df['closesma7']=totaldataset_df['close'].rolling(window=7,min_periods=1).mean()
@@ -133,6 +133,11 @@ totaldataset_df['closesma14']=totaldataset_df['close'].rolling(window=14,min_per
 totaldataset_df['closesma21']=totaldataset_df['close'].rolling(window=21,min_periods=1).mean()
 totaldataset_df['closesma28']=totaldataset_df['close'].rolling(window=28,min_periods=1).mean()
 totaldataset_df['closesma60']=totaldataset_df['close'].rolling(window=60,min_periods=1).mean()
+totaldataset_df['close_shift']=totaldataset_df['close'].shift(1)
+
+# totaldataset_df.iloc[totaldataset_df.first_valid_index()-1]=totaldataset_df.value.iloc[0]
+totaldataset_df=totaldataset_df.dropna()
+# totaldataset_df.loc[0, 'close_shift'] = totaldataset_df.close_shift[totaldataset_df.close_shift.notnull()].values[0]
 
 #block_time
 totaldataset_df['block_time7']=totaldataset_df['block_time'].rolling(window=7,min_periods=1).mean()
@@ -152,45 +157,107 @@ totaldataset_df['block_size100']=totaldataset_df['block_size'].rolling(window=10
 totaldataset_df['comments3']=totaldataset_df['comments'].rolling(window=3,min_periods=1).mean()
 totaldataset_df['comments5']=totaldataset_df['comments'].rolling(window=5,min_periods=1).mean()
 totaldataset_df['comments7']=totaldataset_df['comments'].rolling(window=7,min_periods=1).mean()
+
+
+def corr(data1,data2):
+    #data1 and data2 should be in np arrays#
+    mean1=data1.mean()
+    mean2=data2.mean()
+    std1= data1.std()
+    std2= data2.std()
+    corr =((data1*data2).mean()-mean1*mean2)/(std1*std2)
+    return corr
+
+
+a1='close'
+result={}
+for a2 in totaldataset_df.columns:
+    if a1 != a2:
+        test_result = corr(totaldataset_df[a1], totaldataset_df[a2])
+        # print(a1 + ' and ' + a2 + ': correlation = ' + str(test_result))
+        result.update({a1 +' and '+ a2 +': correlation = ':test_result})
+
+# corrMatrix = totaldataset_df.corr()
+
+
+a_list = sorted(result.items(), key=lambda x: x[1])
+a_list_1 = sorted(result.items(), key=lambda x: x[1], reverse=True)
+
+
+
+for i in range(len(a_list_1)):
+    for j in range(len(a_list_1[0])):
+        print(a_list_1[i][j],end='')
+    print()
+
+
+
+
+
+# 设置绘图风格
+plt.style.use('ggplot')
+sn.set_style('whitegrid')
+# 设置画板尺寸
+plt.subplots(figsize=(30, 20))
+
+# 画热力图
+# 为上三角矩阵生成掩码
+mask = np.zeros_like(totaldataset_df.corr(), dtype=np.bool)
+mask[np.triu_indices_from(mask)] = True
+
+sn.heatmap(totaldataset_df.corr(),
+            cmap=sn.diverging_palette(20, 220, n=200),
+            mask=mask,  # 数据显示在mask为False的单元格中
+            annot=True,  # 注入数据
+            center=0,  # 绘制有色数据时将色彩映射居中的值
+            fmt='.1f'
+            )
+# Give title.
+plt.title("Heatmap of all the Features", fontsize=30)
+plt.show()
+totaldataset_df.to_csv('../Dataset/totaldataset_df_new.csv',float_format='%f',index=True)
+
+
+
 # totaldataset_df['difficulty28']=totaldataset_df['total_volume_quote'].rolling(window=28,min_periods=1).mean()
 # total_volume_quote
 #Normalization------------------------------Data Processing----------------------
-from sklearn.preprocessing import StandardScaler, MinMaxScaler,LabelEncoder
-
-stander_encoder = StandardScaler()
-
+# from sklearn.preprocessing import StandardScaler, MinMaxScaler,LabelEncoder
+#
+# stander_encoder = StandardScaler()
+#
+# # Close_price=stander_encoder.fit_transform(np.array(totaldataset_df['close']) .reshape(-1, 1) )
+#
 # Close_price=stander_encoder.fit_transform(np.array(totaldataset_df['close']) .reshape(-1, 1) )
-
-Close_price=stander_encoder.fit_transform(np.array(totaldataset_df['close']) .reshape(-1, 1) )
-#active_addresses
-actadd=stander_encoder.fit_transform(np.array( totaldataset_df['active_addresses']).reshape(-1, 1) )
-actadd7=stander_encoder.fit_transform(np.array( totaldataset_df['actadd7']).reshape(-1, 1) )
-actadd14=stander_encoder.fit_transform(np.array(totaldataset_df['actadd14']) .reshape(-1, 1) )
-actadd21=stander_encoder.fit_transform(np.array(totaldataset_df['actadd21']) .reshape(-1, 1) )
-actadd28=stander_encoder.fit_transform(np.array(totaldataset_df['actadd28']) .reshape(-1, 1) )
-#volumefrom  volumeto
-volumefrom7=stander_encoder.fit_transform(np.array(totaldataset_df['volumefrom7']) .reshape(-1, 1) )
-volumeto7=stander_encoder.fit_transform(np.array(totaldataset_df['volumeto7']) .reshape(-1, 1) )
-
-#large_transaction_count
-large_transaction_count7=stander_encoder.fit_transform(np.array(totaldataset_df['large_transaction_count7']) .reshape(-1, 1) )
-
-#difficulty
-difficulty7=stander_encoder.fit_transform(np.array(totaldataset_df['difficulty7']) .reshape(-1, 1) )
-difficulty14=stander_encoder.fit_transform(np.array(totaldataset_df['difficulty14']) .reshape(-1, 1) )
-difficulty28=stander_encoder.fit_transform(np.array(totaldataset_df['difficulty28']) .reshape(-1, 1) )
-
-#average_transaction_value
-
-average_transaction_value28=stander_encoder.fit_transform(np.array(totaldataset_df['average_transaction_value28']) .reshape(-1, 1) )
-
-closesma3=stander_encoder.fit_transform(np.array(totaldataset_df['closesma3']) .reshape(-1, 1) )
-closesma5=stander_encoder.fit_transform(np.array(totaldataset_df['closesma5']) .reshape(-1, 1) )
-closesma7=stander_encoder.fit_transform(np.array(totaldataset_df['closesma7']) .reshape(-1, 1) )
-closesma14=stander_encoder.fit_transform(np.array(totaldataset_df['closesma14']) .reshape(-1, 1) )
-closesma21=stander_encoder.fit_transform(np.array(totaldataset_df['closesma21']) .reshape(-1, 1) )
-closesma28=stander_encoder.fit_transform(np.array(totaldataset_df['closesma28']) .reshape(-1, 1) )
-closesma60=stander_encoder.fit_transform(np.array(totaldataset_df['closesma60']) .reshape(-1, 1) )
+# #active_addresses
+# actadd=stander_encoder.fit_transform(np.array( totaldataset_df['active_addresses']).reshape(-1, 1) )
+# actadd7=stander_encoder.fit_transform(np.array( totaldataset_df['actadd7']).reshape(-1, 1) )
+# actadd14=stander_encoder.fit_transform(np.array(totaldataset_df['actadd14']) .reshape(-1, 1) )
+# actadd21=stander_encoder.fit_transform(np.array(totaldataset_df['actadd21']) .reshape(-1, 1) )
+# actadd28=stander_encoder.fit_transform(np.array(totaldataset_df['actadd28']) .reshape(-1, 1) )
+# #volumefrom  volumeto
+# volumefrom7=stander_encoder.fit_transform(np.array(totaldataset_df['volumefrom7']) .reshape(-1, 1) )
+# volumeto7=stander_encoder.fit_transform(np.array(totaldataset_df['volumeto7']) .reshape(-1, 1) )
+#
+# #large_transaction_count
+# large_transaction_count7=stander_encoder.fit_transform(np.array(totaldataset_df['large_transaction_count7']) .reshape(-1, 1) )
+#
+# #difficulty
+# difficulty7=stander_encoder.fit_transform(np.array(totaldataset_df['difficulty7']) .reshape(-1, 1) )
+# difficulty14=stander_encoder.fit_transform(np.array(totaldataset_df['difficulty14']) .reshape(-1, 1) )
+# difficulty28=stander_encoder.fit_transform(np.array(totaldataset_df['difficulty28']) .reshape(-1, 1) )
+#
+# #average_transaction_value
+#
+# average_transaction_value28=stander_encoder.fit_transform(np.array(totaldataset_df['average_transaction_value28']) .reshape(-1, 1) )
+#
+# closesma3=stander_encoder.fit_transform(np.array(totaldataset_df['closesma3']) .reshape(-1, 1) )
+# closesma5=stander_encoder.fit_transform(np.array(totaldataset_df['closesma5']) .reshape(-1, 1) )
+# closesma7=stander_encoder.fit_transform(np.array(totaldataset_df['closesma7']) .reshape(-1, 1) )
+# closesma14=stander_encoder.fit_transform(np.array(totaldataset_df['closesma14']) .reshape(-1, 1) )
+# closesma21=stander_encoder.fit_transform(np.array(totaldataset_df['closesma21']) .reshape(-1, 1) )
+# closesma28=stander_encoder.fit_transform(np.array(totaldataset_df['closesma28']) .reshape(-1, 1) )
+# closesma60=stander_encoder.fit_transform(np.array(totaldataset_df['closesma60']) .reshape(-1, 1) )
 
 
 
@@ -202,53 +269,53 @@ closesma60=stander_encoder.fit_transform(np.array(totaldataset_df['closesma60'])
 # total_volume_quote28=stander_encoder.fit_transform(np.array(totaldataset_df['total_volume_quote28']) .reshape(-1, 1) )
 
 
-#block_time
-block_time7=stander_encoder.fit_transform(np.array(totaldataset_df['block_time7']) .reshape(-1, 1) )
-block_time14=stander_encoder.fit_transform(np.array(totaldataset_df['block_time14']) .reshape(-1, 1) )
-block_time28=stander_encoder.fit_transform(np.array(totaldataset_df['block_time28']) .reshape(-1, 1) )
-block_time60=stander_encoder.fit_transform(np.array(totaldataset_df['block_time60']) .reshape(-1, 1) )
-block_time100=stander_encoder.fit_transform(np.array(totaldataset_df['block_time100']) .reshape(-1, 1) )
-
-#block_size
-block_size7=stander_encoder.fit_transform(np.array(totaldataset_df['block_size7']) .reshape(-1, 1) )
-block_size14=stander_encoder.fit_transform(np.array(totaldataset_df['block_size14']) .reshape(-1, 1) )
-block_size28=stander_encoder.fit_transform(np.array(totaldataset_df['block_size28']) .reshape(-1, 1) )
-block_size60=stander_encoder.fit_transform(np.array(totaldataset_df['block_size60']) .reshape(-1, 1) )
-block_size100=stander_encoder.fit_transform(np.array(totaldataset_df['block_size100']) .reshape(-1, 1) )
-
-#comments
-comments3=stander_encoder.fit_transform(np.array(totaldataset_df['comments3']) .reshape(-1, 1) )
-comments5=stander_encoder.fit_transform(np.array(totaldataset_df['comments5']) .reshape(-1, 1) )
-comments7=stander_encoder.fit_transform(np.array(totaldataset_df['comments7']) .reshape(-1, 1) )
-
-
-
-plt.figure(figsize=(30, 18))
-plt.title('Testing')
-# plt.plot(lstm_baseline_ytest_pred, label="LSTM_Baseline_Preds",color='Blue')
-# # plt.plot(totaldataset_df['actadd7'] , label="active_addresses 7",color='Green')
-# # plt.plot(totaldataset_df['actadd14'] , label="active_addresses 14",color='Red')
-plt.plot(totaldataset_df['actadd21'] , label="active_addresses 21",color='Brown')
-# # plt.plot(totaldataset_df['close'], label="Close Prices",color='Blue')
-# # plt.legend()
-# # plt.show()
+# #block_time
+# block_time7=stander_encoder.fit_transform(np.array(totaldataset_df['block_time7']) .reshape(-1, 1) )
+# block_time14=stander_encoder.fit_transform(np.array(totaldataset_df['block_time14']) .reshape(-1, 1) )
+# block_time28=stander_encoder.fit_transform(np.array(totaldataset_df['block_time28']) .reshape(-1, 1) )
+# block_time60=stander_encoder.fit_transform(np.array(totaldataset_df['block_time60']) .reshape(-1, 1) )
+# block_time100=stander_encoder.fit_transform(np.array(totaldataset_df['block_time100']) .reshape(-1, 1) )
 #
-# # plt.plot(actadd.reshape(-1, 1)  , label="active_addresses",color='Pink')
-# # plt.plot(actadd7.reshape(-1, 1)  , label="active_addresses 7",color='Green')
-plt.plot(actadd14.reshape(-1, 1)  , label="active_addresses 14",color='Blue')   #*Better-------------
-# # plt.plot(actadd21.reshape(-1, 1)  , label="active_addresses 21",color='Brown')
-# # plt.plot(actadd28.reshape(-1, 1)  , label="active_addresses 28",color='Black')
+# #block_size
+# block_size7=stander_encoder.fit_transform(np.array(totaldataset_df['block_size7']) .reshape(-1, 1) )
+# block_size14=stander_encoder.fit_transform(np.array(totaldataset_df['block_size14']) .reshape(-1, 1) )
+# block_size28=stander_encoder.fit_transform(np.array(totaldataset_df['block_size28']) .reshape(-1, 1) )
+# block_size60=stander_encoder.fit_transform(np.array(totaldataset_df['block_size60']) .reshape(-1, 1) )
+# block_size100=stander_encoder.fit_transform(np.array(totaldataset_df['block_size100']) .reshape(-1, 1) )
 #
-plt.plot(volumefrom7.reshape(-1, 1)  , label="volumefrom 7 ",color='fuchsia') #*Better-------------
-
-plt.plot(volumefrom7.reshape(-1, 1)  , label="volumefrom 7 ",color='Green')#*Better-------------
-
-#difficulty
-# plt.plot(difficulty7.reshape(-1, 1)  , label="difficulty  7",color='Blue')#*low Better-------------
-# plt.plot(difficulty14.reshape(-1, 1)  , label="difficulty 14",color='Green')
-# plt.plot(difficulty28.reshape(-1, 1)  , label="difficulty 28",color='Brown')
+# #comments
+# comments3=stander_encoder.fit_transform(np.array(totaldataset_df['comments3']) .reshape(-1, 1) )
+# comments5=stander_encoder.fit_transform(np.array(totaldataset_df['comments5']) .reshape(-1, 1) )
+# comments7=stander_encoder.fit_transform(np.array(totaldataset_df['comments7']) .reshape(-1, 1) )
 #
-plt.plot(large_transaction_count7.reshape(-1, 1)  , label="large_transaction_count 7",color='darkviolet') #*Better-------------
+#
+#
+# plt.figure(figsize=(30, 18))
+# plt.title('Testing')
+# # plt.plot(lstm_baseline_ytest_pred, label="LSTM_Baseline_Preds",color='Blue')
+# # # plt.plot(totaldataset_df['actadd7'] , label="active_addresses 7",color='Green')
+# # # plt.plot(totaldataset_df['actadd14'] , label="active_addresses 14",color='Red')
+# plt.plot(totaldataset_df['actadd21'] , label="active_addresses 21",color='Brown')
+# # # plt.plot(totaldataset_df['close'], label="Close Prices",color='Blue')
+# # # plt.legend()
+# # # plt.show()
+# #
+# # # plt.plot(actadd.reshape(-1, 1)  , label="active_addresses",color='Pink')
+# # # plt.plot(actadd7.reshape(-1, 1)  , label="active_addresses 7",color='Green')
+# plt.plot(actadd14.reshape(-1, 1)  , label="active_addresses 14",color='Blue')   #*Better-------------
+# # # plt.plot(actadd21.reshape(-1, 1)  , label="active_addresses 21",color='Brown')
+# # # plt.plot(actadd28.reshape(-1, 1)  , label="active_addresses 28",color='Black')
+# #
+# plt.plot(volumefrom7.reshape(-1, 1)  , label="volumefrom 7 ",color='fuchsia') #*Better-------------
+#
+# plt.plot(volumefrom7.reshape(-1, 1)  , label="volumefrom 7 ",color='Green')#*Better-------------
+#
+# #difficulty
+# # plt.plot(difficulty7.reshape(-1, 1)  , label="difficulty  7",color='Blue')#*low Better-------------
+# # plt.plot(difficulty14.reshape(-1, 1)  , label="difficulty 14",color='Green')
+# # plt.plot(difficulty28.reshape(-1, 1)  , label="difficulty 28",color='Brown')
+# #
+# plt.plot(large_transaction_count7.reshape(-1, 1)  , label="large_transaction_count 7",color='darkviolet') #*Better-------------
 
 # plt.plot(total_volume_quote7.reshape(-1, 1)  , label="total_volume_quote",color='Blue')  -------------problem
 
@@ -285,13 +352,13 @@ plt.plot(large_transaction_count7.reshape(-1, 1)  , label="large_transaction_cou
 # plt.plot(comments7.reshape(-1, 1)  , label="comments 7",color='Brown')
 
 
-plt.plot(Close_price.reshape(-1, 1) , label="Close Prices",color='red')
-plt.legend()
-plt.savefig(r'C:\Users\ssel512\Desktop\save.jpg')
-plt.show()
-
-
-
+# plt.plot(Close_price.reshape(-1, 1) , label="Close Prices",color='red')
+# plt.legend()
+# plt.savefig(r'C:\Users\ssel512\Desktop\save.jpg')
+# plt.show()
+#
+#
+#
 
 
 # totaldataset_df[['close','active_addresses']].plot(secondary_y='active addresses',grid=True,figsize=(30, 18))

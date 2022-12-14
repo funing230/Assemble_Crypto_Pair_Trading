@@ -50,7 +50,7 @@ dropput=0.3
 
 
 #-------------------add by funing for getdataset---------------------------------------
-totaldataset_file_path = 'total_dataset.csv'
+totaldataset_file_path = '../Dataset/total_dataset.csv'
 X, y = get_Data(totaldataset_file_path)
 X_total,y_total,scaler_y=normalization(X, y)
 

@@ -197,10 +197,10 @@ if __name__=="__main__":
     # # converting the date from unix format to datetime
     # final_ohlcv['time'] = pd.to_datetime(final_ohlcv['time'], unit='s')
     # # saving the historical data in a csv file
-    # final_ohlcv.to_csv("final_ohlcv_data.csv", index=False)
+    # final_ohlcv.to_csv("final_ohlcv_data_BTC.csv", index=False)
     # print('File saved in csv')
 
-    # getVolume='https://min-api.cryptocompare.com/data/symbol/histoday?fsym=ETH&tsym=USD&limit=2000&toTs=1638288000'
+    # getVolume='https://min-api.cryptocompare.com/data/symbol/histoday?fsym=BTC&tsym=USD&limit=2000&toTs=1638288000'
     #
     # print('~~~~~~~~~getVolume~~~~~~~')
     # # api call to extract all historical data
@@ -212,7 +212,7 @@ if __name__=="__main__":
     # # converting the date from unix format to datetime
     # final_Volume['time'] = pd.to_datetime(final_Volume['time'], unit='s')
     # # saving the historical data in a csv file
-    # final_Volume.to_csv("final_Volume_data.csv", index=False)
+    # final_Volume.to_csv("final_Volume_data_BTC.csv", index=False)
     # print('File saved in csv')
 
     # getTransaction='https://min-api.cryptocompare.com/data/blockchain/histo/day?fsym=BTC&api_key=331502a6cb6fd8e4ec8c31994a1baf2fe19ab1f7ebf9e64820522d93acc2df3d&limit=2000&toTs=1638288000'
@@ -228,42 +228,42 @@ if __name__=="__main__":
     # # converting the date from unix format to datetime
     # final_Transaction['time'] = pd.to_datetime(final_Transaction['time'], unit='s')
     # # saving the historical data in a csv file
-    # final_Transaction.to_csv("final_Transaction_data.csv", index=False)
+    # final_Transaction.to_csv("final_Transaction_data_BTC.csv", index=False)
     # print('File saved in csv')
 
-    # getSentiment='https://min-api.cryptocompare.com/data/tradingsignals/intotheblock/latest?fsym=BTC&limit=2000&api_key=331502a6cb6fd8e4ec8c31994a1baf2fe19ab1f7ebf9e64820522d93acc2df3d&toTs=1638288000'
-    #
-    # print('~~~~~~~~~getVolume~~~~~~~')
-    # # api call to extract all historical data
-    # final_list = get_Sentiment(getSentiment)
-    # print('API call made to extract OHLCV data')
-    # final_Sentiment = pd.DataFrame(final_list, columns=['time',
-    #                                                     'inOutVarsentiment','inOutVarvalue',
-    #                                                     'largetxsVarsentiment', 'largetxsVarvalue',
-    #                                                     'addressesNetGrowthsentiment', 'addressesNetGrowthvalue',
-    #                                                     'concentrationVarsentiment', 'concentrationVarvalue',
-    #                                                     ])
-    # # converting the date from unix format to datetime
-    # final_Sentiment['time'] = pd.to_datetime(final_Sentiment['time'], unit='s')
-    # # saving the historical data in a csv file
-    # final_Sentiment.to_csv("final_Sentiment_data.csv", index=False)
-    # print('File saved in csv')
+    getSentiment='https://min-api.cryptocompare.com/data/tradingsignals/intotheblock/latest?fsym=BTC&limit=2000&api_key=331502a6cb6fd8e4ec8c31994a1baf2fe19ab1f7ebf9e64820522d93acc2df3d&toTs=1638288000'
 
-    getSocialStats ='https://min-api.cryptocompare.com/data/social/coin/histo/day?coinId=7605&aggregate=1&limit=2000&api_key=331502a6cb6fd8e4ec8c31994a1baf2fe19ab1f7ebf9e64820522d93acc2df3d&toTs=1664985600'
-
-    print('~~~~~~~~~SocialStats~~~~~~~')
+    print('~~~~~~~~~getVolume~~~~~~~')
     # api call to extract all historical data
-    final_list = get_SocialStats(getSocialStats)
-    print('API call made to extract SocialStats data')
-    final_SocialStats = pd.DataFrame(final_list, columns=['time',
-                                                        'comments','posts',
-                                                        'followers', 'points'
+    final_list = get_Sentiment(getSentiment)
+    print('API call made to extract OHLCV data')
+    final_Sentiment = pd.DataFrame(final_list, columns=['time',
+                                                        'inOutVarsentiment','inOutVarvalue',
+                                                        'largetxsVarsentiment', 'largetxsVarvalue',
+                                                        'addressesNetGrowthsentiment', 'addressesNetGrowthvalue',
+                                                        'concentrationVarsentiment', 'concentrationVarvalue',
                                                         ])
     # converting the date from unix format to datetime
-    final_SocialStats['time'] = pd.to_datetime(final_SocialStats['time'], unit='s')
+    final_Sentiment['time'] = pd.to_datetime(final_Sentiment['time'], unit='s')
     # saving the historical data in a csv file
-    final_SocialStats.to_csv("final_SocialStats_data_now.csv", index=False)
+    final_Sentiment.to_csv("final_Sentiment_data_BTC.csv", index=False)
     print('File saved in csv')
+
+    # getSocialStats ='https://min-api.cryptocompare.com/data/social/coin/histo/day?coinId=7605&aggregate=1&limit=2000&api_key=331502a6cb6fd8e4ec8c31994a1baf2fe19ab1f7ebf9e64820522d93acc2df3d&toTs=1664985600'
+    #
+    # print('~~~~~~~~~SocialStats~~~~~~~')
+    # # api call to extract all historical data
+    # final_list = get_SocialStats(getSocialStats)
+    # print('API call made to extract SocialStats data')
+    # final_SocialStats = pd.DataFrame(final_list, columns=['time',
+    #                                                     'comments','posts',
+    #                                                     'followers', 'points'
+    #                                                     ])
+    # # converting the date from unix format to datetime
+    # final_SocialStats['time'] = pd.to_datetime(final_SocialStats['time'], unit='s')
+    # # saving the historical data in a csv file
+    # final_SocialStats.to_csv("final_SocialStats_data_now.csv", index=False)
+    # print('File saved in csv')
 
     #
     # # api urls to get all the data

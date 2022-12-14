@@ -2,7 +2,7 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 # from timeseries_util import split_sequences,LSTM,fitness_calculate,MyDataset
-from GA_Assemble_util import Net,CNNLSTMOptimization,MyDataset,split_sequences,seed_everything,get_data  #,Normalizer
+from GA_Assemble_util import Net,CNNLSTMOptimization,MyDataset,split_sequences,seed_everything,get_data ,Normalizer
 from mealpy.evolutionary_based import GA
 from mealpy.swarm_based import GWO
 from permetrics.regression import RegressionMetric
@@ -111,7 +111,7 @@ class HybridMlp:
 
         n_steps = int(structure["n_steps"])
 
-        totaldataset_file_path = 'total_dataset.csv'
+        totaldataset_file_path = '../Dataset/totaldataset_df_new.csv'
         totaldataset_df = pd.read_csv(totaldataset_file_path, parse_dates=[0], index_col=0)
 
         X, y = totaldataset_df.drop(columns=['close']), totaldataset_df['close']
@@ -124,10 +124,13 @@ class HybridMlp:
         X_total = scaler.fit_transform(X)  # ss.fit_transform(X)  normalize(X)
         y_total = scaler_y.fit_transform(y)
 
+        # window=30
         # scaler = Normalizer()
         # scaler_y = Normalizer()
-        # X_trans=scaler.fit_transform(X,window=window)
-        # y_trans=scaler_y.fit_transform(y,window=window)
+        # X_total=scaler.fit_transform(X,window=window)
+        # print(X_total.isnull().sum())
+        # y_total=scaler_y.fit_transform(pd.DataFrame(y),window=window)
+        # print(y_total.isnull().sum())
         # END---------------Normalization------------------------------Data Processing----------------------
 
         # Cut dataset by time step[1,2,3,4,5,6.......30]=====>[31]
@@ -138,7 +141,7 @@ class HybridMlp:
         train, test=get_data(X_ss, y_en,False)
 
         #Model parameter
-        input_dim = 32   #total feature number
+        input_dim = 66   #total feature number
         output_dim = 1
 
         batch_size=int(structure["batch_size"])

@@ -10,20 +10,22 @@ GA_LSTM_Prediction=np.loadtxt(open("../result/GA_ytest_pred.csv", "rb"), delimit
 CNN_baseline_ytest_pred=np.loadtxt(open("../result/CNN_baseline_ytest_pred.csv", "rb"), delimiter=",", skiprows=0)
 GA_CNN_ytest_pred=np.loadtxt(open("../result/GA_CNN_ytest_pred.csv", "rb"), delimiter=",", skiprows=0)
 
-CNNLSTM_ytest_pred=np.loadtxt(open("../result/CNNLSTM_ytest_pred.csv", "rb"), delimiter=",", skiprows=0)
+GA_CNNLSTM_ytest_pred=np.loadtxt(open("../result/GA_CNNLSTM_ytest_pred.csv", "rb"), delimiter=",", skiprows=0)
 CNNLSTM_ytest=np.loadtxt(open("../result/CNNLSTM_ytest.csv", "rb"), delimiter=",", skiprows=0)
 
+
+Assemble_model =np.loadtxt(open("../result/GA_Assemble_ytest_pred.csv", "rb"), delimiter=",", skiprows=0)
 #GA_CNN_ytest_pred.csv
 
 # plot baseline and predictions
 plt.figure(figsize=(15, 8))
 plt.title('Testing')
 plt.plot(baseline, label="True Lable",color='RED')
-plt.plot(CNN_baseline_ytest_pred, label="CNN_Prediction",color='Black')
-plt.plot(GA_CNN_ytest_pred, label="GA_CNN_Prediction",color='Blue')
-plt.plot(GA_LSTM_Prediction, label="GA_LSTM_Prediction",color='Green')
+plt.plot(Assemble_model, label="Assemble_model",color='Green')
+# plt.plot(GA_CNN_ytest_pred, label="GA_CNN_Prediction",color='Blue')
+# plt.plot(GA_LSTM_Prediction, label="GA_LSTM_Prediction",color='Green')
 
-plt.plot(CNNLSTM_ytest_pred, label="CNNLSTM_ytest_pred",color='Orange')
+plt.plot(GA_CNNLSTM_ytest_pred, label="GA_CNNLSTM",color='Blue')
 # plt.plot(CNNLSTM_ytest, label="CNNLSTM_ytest",color='Green')
 
 plt.legend()

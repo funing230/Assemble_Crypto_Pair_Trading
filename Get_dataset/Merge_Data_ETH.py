@@ -5,14 +5,24 @@ import csv
 import matplotlib.pyplot as plt
 from datetime import date as dt
 
-price_file_path = 'final_ohlcv_data.csv'   #2017.12.31---2021.8.31   “time,high,low,open,volumefrom,volumeto,close”
+def corr(data1,data2):
+    #data1 and data2 should be in np arrays#
+    mean1=data1.mean()
+    mean2=data2.mean()
+    std1= data1.std()
+    std2= data2.std()
+    corr =((data1*data2).mean()-mean1*mean2)/(std1*std2)
+    return corr
+
+
+price_file_path = 'final_ohlcv_data_ETH.csv'   #2017.12.31---2021.8.31   “time,high,low,open,volumefrom,volumeto,close”
 price_df = pd.read_csv(price_file_path, parse_dates=[0], index_col=0)
 price_df.columns = ["high","low","open","volumefrom","volumeto","close"]
 price_df=price_df['20181001':'20211201']
 
 
 
-volume_file_path = 'final_Volume_data.csv'
+volume_file_path = 'final_Volume_data_ETH.csv'
 # “time,top_tier_volume_quote,top_tier_volume_base,top_tier_volume_total,cccagg_volume_quote,cccagg_volume_base,cccagg_volume_total,total_volume_quote,total_volume_base,total_volume_total”
 volume_df = pd.read_csv(volume_file_path, parse_dates=[0], index_col=0)
 volume_df.columns = ["top_tier_volume_quote","top_tier_volume_base","top_tier_volume_total",
@@ -22,7 +32,7 @@ volume_df=volume_df['20181001':'20211201']
 
 
 
-transaction_file_path = 'final_Transaction_data.csv'
+transaction_file_path = 'final_Transaction_data_ETH.csv'
 #“time,zero_balance_addresses_all_time,unique_addresses_all_time,new_addresses,active_addresses,transaction_count,transaction_count_all_time,
 # large_transaction_count,average_transaction_value,block_height,hashrate,difficulty,block_time,block_size,current_supply”
 transaction_df = pd.read_csv(transaction_file_path, parse_dates=[0], index_col=0)
@@ -32,7 +42,7 @@ transaction_df.columns = ["zero_balance_addresses_all_time","unique_addresses_al
 transaction_df=transaction_df['20181001':'20211201']
 
 
-socialstats_file_path = 'final_SocialStats_data.csv'
+socialstats_file_path = 'final_SocialStats_data_now_ETH.csv'
 #comments,posts,followers,points
 socialstats_df = pd.read_csv(socialstats_file_path, parse_dates=[0], index_col=0)
 socialstats_df.columns = ["comments","posts","followers","points"]
@@ -41,7 +51,7 @@ socialstats_df=socialstats_df['20181001':'20211201']
 
 total_dataset = pd.concat([price_df,volume_df,transaction_df,socialstats_df],axis=1)
 
-total_dataset.to_csv("total_dataset20221117.csv", index=True)
+total_dataset.to_csv("total_dataset_ETH.csv", index=True)
 
 
 
@@ -50,23 +60,31 @@ X, y = total_dataset[["high","low","open","volumefrom","volumeto","top_tier_volu
                     "total_volume_quote","total_volume_base","total_volume_total","zero_balance_addresses_all_time","unique_addresses_all_time",
                     "new_addresses","active_addresses","transaction_count","transaction_count_all_time","large_transaction_count",
                     "average_transaction_value","block_height","hashrate",
-                    "difficulty","block_time","block_size","current_supply",
-                    "comments","posts","followers","points"]], total_dataset['close']
-print(X.shape)
-print(y.shape)
+                    "difficulty","block_time","block_size","current_supply","comments","posts","followers","points"]], total_dataset['close']
+                    # "comments","posts","followers","points"
 
+a1='close'
 
-#Normalization------------------------------Data Processing----------------------
-from sklearn.preprocessing import StandardScaler, MinMaxScaler,LabelEncoder
+for a2 in total_dataset.columns:
+    if a1 != a2:
+        test_result = corr(total_dataset[a1], total_dataset[a2])
+        print(a1 + ' and ' + a2 + ': correlation = ' + str(test_result))
 
-encoder = LabelEncoder()
-ss = MinMaxScaler()
-X = X.values
-X_trans = ss.fit_transform(X)  # ss.fit_transform(X)  normalize(X)
-y_trans = encoder.fit_transform(y)
-
-print(type(X_trans))
-
+# print(X.shape)
+# print(y.shape)
+#
+#
+# #Normalization------------------------------Data Processing----------------------
+# from sklearn.preprocessing import StandardScaler, MinMaxScaler,LabelEncoder
+#
+# encoder = LabelEncoder()
+# ss = MinMaxScaler()
+# X = X.values
+# X_trans = ss.fit_transform(X)  # ss.fit_transform(X)  normalize(X)
+# y_trans = encoder.fit_transform(y)
+#
+# print(type(X_trans))
+#
 
 
 
@@ -79,24 +97,24 @@ print(type(X_trans))
 #                     "comments","posts","followers","points"]
 
 
-
-plt.figure(figsize=(16,8))
-plt.rcParams.update({'font.size':10})
-plt.xticks(rotation=45)
-ax = plt.axes()
-ax.xaxis.set_major_locator(plt.MaxNLocator(20))
-plt.plot(total_dataset)
-plt.title('Performance of cryptocurrencies')
-plt.legend(total_dataset)
-plt.xlabel("Date")
-# date=[cal_date(x) for x in total_dataset.index]
-ax.grid(True)
-
-plt.show()
-
-
-pd.DataFrame(X).plot(subplots=True,figsize=(10, 12))
-plt.show()
+#
+# plt.figure(figsize=(16,8))
+# plt.rcParams.update({'font.size':10})
+# plt.xticks(rotation=45)
+# ax = plt.axes()
+# ax.xaxis.set_major_locator(plt.MaxNLocator(20))
+# plt.plot(total_dataset)
+# plt.title('Performance of cryptocurrencies')
+# plt.legend(total_dataset)
+# plt.xlabel("Date")
+# # date=[cal_date(x) for x in total_dataset.index]
+# ax.grid(True)
+#
+# plt.show()
+#
+#
+# pd.DataFrame(X).plot(subplots=True,figsize=(10, 12))
+# plt.show()
 
 # print(total_dataset.info())
 #

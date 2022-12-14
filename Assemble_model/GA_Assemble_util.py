@@ -77,6 +77,20 @@ def normalization(data,label):
     label=mm_y.fit_transform(label.reshape(-1, 1))
     return data,label,mm_y
 
+
+class Normalizer():
+    def __init__(self):
+        self.mu = None
+        self.sd = None
+    def fit_transform(self, x,window):
+        self.mu = x.rolling(window=window, min_periods=1).mean()
+        self.sd = x.rolling(window=window, min_periods=1).std()
+        normalized_x = (x - self.mu)/self.sd
+        return normalized_x.dropna()
+    def inverse_transform(self, x):
+        return ((x*self.sd) + self.mu).dropna()
+
+
 # split a multivariate sequence into samples
 def split_sequences(input_sequences, output, n_steps_in):
     X, y = list(), list()
