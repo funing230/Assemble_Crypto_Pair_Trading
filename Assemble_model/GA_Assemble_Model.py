@@ -2,7 +2,7 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 # from timeseries_util import split_sequences,LSTM,fitness_calculate,MyDataset
-from GA_Assemble_util import Net,CNNLSTMOptimization,MyDataset,split_sequences,seed_everything,get_data ,Normalizer
+from GA_Assemble_util import Net,CNNLSTMOptimization,MyDataset,split_sequences,seed_everything,get_data ,Normalizer,Net_chatGPT
 from mealpy.evolutionary_based import GA
 from mealpy.swarm_based import GWO
 from permetrics.regression import RegressionMetric

@@ -13,7 +13,7 @@ import math
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
-import torch
+import  torch
 import torch.nn as nn
 from torch.autograd import Variable
 from torch.utils.data import Dataset, DataLoader

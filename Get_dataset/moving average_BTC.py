@@ -215,7 +215,7 @@ sn.heatmap(totaldataset_df.corr(),
 # Give title.
 plt.title("Heatmap of all the Features", fontsize=30)
 plt.show()
-totaldataset_df.to_csv('../Dataset/totaldataset_df_new.csv',float_format='%f',index=True)
+totaldataset_df.to_csv('../Dataset/totaldataset_df_BTC.csv',float_format='%f',index=True)
 
 
 

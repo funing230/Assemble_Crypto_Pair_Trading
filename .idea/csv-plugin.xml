@@ -3,6 +3,20 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\0513_GALabeling_FinallLabeling\predict_pair_trading.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Baseline_ALL\predict_pair_trading.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Dataset\total_dataset.csv">
           <value>
             <Attribute>
@@ -10,7 +24,77 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Dataset\total_dataset_BTC.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Dataset\total_dataset_ETH.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Dataset\totaldataset_df_BTC.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Dataset\totaldataset_df_ETH.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Dataset\totaldataset_df_new.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\GA_weight\GA_Assemble_ytest_BITCOIN.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\GA_weight\GA_Assemble_ytest_ETH.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\GA_weight\GA_Assemble_ytest_pred_BITCOIN.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\GA_weight\GA_Assemble_ytest_pred_ETH.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Get_dataset\final_Sentiment_data_BTC.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Get_dataset\final_Sentiment_data_ETH.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -31,7 +115,28 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\Get_dataset\final_ohlcv_data.csv">
+        <entry key="\Get_dataset\final_Transaction_data_BTC.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Get_dataset\final_Transaction_data_ETH.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Get_dataset\final_Volume_data_BTC.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Get_dataset\final_Volume_data_ETH.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -52,13 +157,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\Get_dataset\total_dataset20221214.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\Get_dataset\total_dataset_BTC.csv">
           <value>
             <Attribute>
@@ -66,7 +164,56 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\Get_dataset\total_dataset_ETH.csv">
+        <entry key="\PairsTrading\BTC.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\PairsTrading\ETH.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\PairsTrading\z_score_singel.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\RBM_CNN_LSTM\Assemble_Model_pred.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\RBM_CNN_LSTM\labeling\predict_pair_trading.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\RBM_CNN_LSTM\labeling\z_score_singel.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\RBM_CNN_LSTM\total_dataset.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\RBM_CNN_LSTM\z_score_singel.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

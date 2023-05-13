@@ -33,7 +33,7 @@ loss_function = torch.nn.MSELoss()
 optimizer = torch.optim.Adam
 
 # Generate input and output data
-totaldataset_file_path = 'total_dataset.csv'
+totaldataset_file_path = '../Dataset/total_dataset.csv'
 totaldataset_df = pd.read_csv(totaldataset_file_path, parse_dates=[0], index_col=0)
 
 X, y = totaldataset_df.drop(columns=['close']), totaldataset_df['close']

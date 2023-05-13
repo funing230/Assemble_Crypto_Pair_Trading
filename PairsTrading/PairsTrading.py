@@ -353,12 +353,9 @@ def stationarity_test(X, cutoff=0.01):
 
 def strategy(price_A, price_B, window1, window2):
     ratios = price_A - price_B
-    ma1 = ratios.rolling(window=window1,
-                         center=False).mean()
-    ma2 = ratios.rolling(window=window2,
-                         center=False).mean()
-    std = ratios.rolling(window=window2,
-                         center=False).std()
+    ma1 = ratios.rolling(window=window1, center=False).mean()
+    ma2 = ratios.rolling(window=window2, center=False).mean()
+    std = ratios.rolling(window=window2, center=False).std()
     mspread = (ma1 - ma2) / std
     stationarity_test(mspread.dropna())
     sigma = np.std(mspread)
@@ -422,6 +419,9 @@ def strategy(price_A, price_B, window1, window2):
 
 # trade(df['ADBE'].iloc[881:], df['EBAY'].iloc[881:], 60, 5)
 
+
+temp=df['ADBE'].iloc[881:]
+temp2=df['EBAY'].iloc[881:]
 
 strategy(df['ADBE'].iloc[881:], df['EBAY'].iloc[881:], 60, 5)
 
